@@ -1,133 +1,23 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUX",
-      "label": "Influx",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "4.0.1"
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    }
-  ],
-  "id": null,
-  "title": "InfluxDB Docker",
-  "tags": [],
-  "style": "dark",
-  "timezone": "browser",
-  "editable": true,
-  "sharedCrosshair": false,
-  "hideControls": false,
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
-  "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUX}",
-        "hide": 0,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "host",
-        "options": [],
-        "query": "show tag values with key = \"host\"",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": null,
-        "tagsQuery": null,
-        "type": "query"
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUX}",
-        "hide": 0,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "container",
-        "options": [],
-        "query": "show tag values with key = \"container_name\" where host = '$host'",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": null,
-        "tagsQuery": null,
-        "type": "query"
-      }
-    ]
-  },
   "annotations": {
     "list": []
   },
-  "refresh": "30s",
-  "schemaVersion": 13,
-  "version": 56,
-  "links": [],
+  "editable": true,
   "gnetId": 1150,
+  "graphTooltip": 0,
+  "hideControls": false,
+  "id": 2,
+  "links": [],
+  "refresh": "30s",
   "rows": [
     {
-      "title": "Dashboard Row",
+      "collapse": false,
+      "height": 274,
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUX}",
+          "datasource": "influxdb",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -216,6 +106,7 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
             "mode": "time",
@@ -240,8 +131,7 @@
               "min": null,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "cacheTimeout": null,
@@ -252,7 +142,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_INFLUX}",
+          "datasource": "influxdb",
           "editable": true,
           "error": false,
           "format": "none",
@@ -366,7 +256,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_INFLUX}",
+          "datasource": "influxdb",
           "editable": true,
           "error": false,
           "format": "none",
@@ -480,7 +370,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(245, 54, 54, 0.9)"
           ],
-          "datasource": "${DS_INFLUX}",
+          "datasource": "influxdb",
           "editable": true,
           "error": false,
           "format": "percent",
@@ -592,21 +482,21 @@
           "valueName": "avg"
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": 274,
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
     },
     {
-      "title": "Dashboard Row",
+      "collapse": false,
+      "height": 327,
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUX}",
+          "datasource": "influxdb",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -697,6 +587,7 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
             "mode": "time",
@@ -721,25 +612,24 @@
               "min": null,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": 327,
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
     },
     {
-      "title": "Dashboard Row",
+      "collapse": false,
+      "height": 315,
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUX}",
+          "datasource": "influxdb",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -945,141 +835,141 @@
           ]
         },
         {
-          "id": 9,
-          "title": "Memory usage",
-          "error": false,
-          "span": 7,
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "influxdb",
           "editable": true,
-          "type": "graph",
+          "error": false,
+          "fill": 2,
+          "id": 9,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 7,
+          "stack": true,
+          "steppedLine": false,
           "targets": [
             {
-              "expr": "",
-              "intervalFactor": 2,
-              "refId": "A",
-              "policy": "default",
+              "alias": "$tag_container_name",
               "dsType": "influxdb",
+              "expr": "",
+              "groupBy": [
+                {
+                  "params": [
+                    "$interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "container_name"
+                  ],
+                  "type": "tag"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "intervalFactor": 2,
+              "measurement": "docker_container_mem",
+              "policy": "default",
+              "refId": "A",
               "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "usage"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  }
+                ]
+              ],
               "tags": [
                 {
                   "key": "host",
                   "operator": "=~",
                   "value": "/^$host$/"
                 }
-              ],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "params": [
-                    "$interval"
-                  ]
-                },
-                {
-                  "type": "tag",
-                  "params": [
-                    "container_name"
-                  ]
-                },
-                {
-                  "type": "fill",
-                  "params": [
-                    "null"
-                  ]
-                }
-              ],
-              "select": [
-                [
-                  {
-                    "type": "field",
-                    "params": [
-                      "usage"
-                    ]
-                  },
-                  {
-                    "type": "mean",
-                    "params": []
-                  }
-                ]
-              ],
-              "measurement": "docker_container_mem",
-              "alias": "$tag_container_name"
+              ]
             }
           ],
-          "datasource": "${DS_INFLUX}",
-          "renderer": "flot",
-          "yaxes": [
-            {
-              "label": null,
-              "show": true,
-              "logBase": 1,
-              "min": null,
-              "max": null,
-              "format": "bytes"
-            },
-            {
-              "label": null,
-              "show": true,
-              "logBase": 1,
-              "min": null,
-              "max": null,
-              "format": "short"
-            }
-          ],
-          "xaxis": {
-            "show": true,
-            "mode": "time",
-            "name": null,
-            "values": []
-          },
-          "lines": true,
-          "fill": 2,
-          "linewidth": 1,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": true,
-          "percentage": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false,
-            "alignAsTable": true,
-            "rightSide": true
-          },
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "individual",
-            "shared": true,
-            "sort": 0,
-            "msResolution": false
-          },
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "aliasColors": {},
-          "seriesOverrides": [],
-          "thresholds": [],
-          "links": []
+          "title": "Memory usage",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": 315,
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
     },
     {
-      "title": "Dashboard Row",
+      "collapse": false,
+      "height": 317,
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUX}",
+          "datasource": "influxdb",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -1095,6 +985,7 @@
           },
           "lines": true,
           "linewidth": 1,
+          "links": [],
           "nullPointMode": "connected",
           "percentage": false,
           "pointradius": 5,
@@ -1235,6 +1126,7 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
             "mode": "time",
@@ -1259,18 +1151,100 @@
               "min": null,
               "show": true
             }
-          ],
-          "links": [],
-          "transparent": true
+          ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": 317,
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
     }
-  ]
+  ],
+  "schemaVersion": 14,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "text": "9f4d0f80ee73",
+          "value": "9f4d0f80ee73"
+        },
+        "datasource": "influxdb",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "host",
+        "options": [],
+        "query": "show tag values with key = \"host\"",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "consul",
+          "value": "consul"
+        },
+        "datasource": "influxdb",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "container",
+        "options": [],
+        "query": "show tag values with key = \"container_name\" where host = '$host'",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "InfluxDB Docker 2",
+  "version": 0
 }
