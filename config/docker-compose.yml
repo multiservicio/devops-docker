@@ -1,0 +1,69 @@
+version: '2'
+
+services:
+  consul:
+      image: consul:0.8.1
+      container_name: consul
+      command: agent -server -bootstrap -client 0.0.0.0 -ui
+      ports:
+        - "8500:8500"
+        - "8400:8400"
+        - "8600:8600"
+      labels:
+        - "SERVICE_TAGS=consul"
+      volumes:
+        - ./consul/config:/consul/config
+
+  registrator:
+    image: gliderlabs/registrator:latest
+    container_name: registrator
+    network_mode: "host"
+    command: "consul://consul:8500"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock"
+    network_mode: "host"
+    depends_on:
+      - consul
+
+  dns:
+    image: mgood/resolvable:latest
+    container_name: dns
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+      - /etc/resolv.conf:/tmp/resolv.conf
+
+  jenkins:
+    image: jenkins:latest
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+
+  sonar:
+    image: sonarqube:latest
+    container_name: sonar
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+  
+  grafana:
+    build: grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+
+  influxdb:
+    image: influxdb
+    container_name: influxdb
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+    volumes:
+      - "./influxdb/config:/etc/influxdb"
+
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock"
+      - ./telegraf/config:/etc/telegraf
+      
