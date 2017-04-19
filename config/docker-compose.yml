@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   consul:
@@ -50,6 +50,11 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
+    volumes:
+      - ./grafana/config:/etc/grafana
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+     - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
 
   influxdb:
     image: influxdb
