@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider "virtualbox" do |vb|
      vb.name = "ubuntu 16.04 LTS"
-     vb.memory = (1024 * 2)
+     vb.memory = (1024 * 3)
      vb.cpus = 2
      vb.linked_clone = true
   end
@@ -34,7 +34,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision :docker
   config.vm.provision :docker_compose
 
+  config.vm.provision "shell", inline: "sysctl -w vm.max_map_count=262144", privileged: true
   config.vm.provision "shell", path: "./provision/10_run_docker.sh", privileged: false, run: "always"
+  config.vm.provision "shell", path: "./provision/20_add_grafana_datasource.sh", privileged: false, run: "always"
 
   # Host updater
   config.hostsupdater.aliases = [

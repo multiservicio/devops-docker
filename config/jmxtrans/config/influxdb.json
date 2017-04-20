@@ -1,0 +1,62 @@
+{
+    "servers": [
+        {
+            "alias": "${alias}",
+            "host": "${host}",
+            "port": "${port}",
+            "queries": [
+                {
+                    "obj": "java.lang:type=Memory",
+                    "attr": [
+                        "HeapMemoryUsage",
+                        "NonHeapMemoryUsage"
+                    ],
+                    "resultAlias": "jvmMemory",
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.InfluxDbWriterFactory",
+                            "url": "${influxurl}",
+                            "username": "${influxuser}",
+                            "password": "${influxpassword}",
+                            "database": "${influxdb}"
+                        }
+                    ]
+                },
+                {
+                    "obj": "java.lang:type=OperatingSystem",
+                    "attr": [
+                        "SystemLoadAverage"
+                    ],
+                    "resultAlias": "jvmSystem",
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.InfluxDbWriterFactory",
+                            "url": "${influxurl}",
+                            "username": "${influxuser}",
+                            "password": "${influxpassword}",
+                            "database": "${influxdb}"
+                        }
+                    ]
+                },
+                {
+                    "obj": "java.lang:type=Threading",
+                    "attr": [
+                        "ThreadCount",
+                        "DaemonThreadCount",
+                        "PeakThreadCount"
+                    ],
+                    "resultAlias": "jvmThreadCount",
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.InfluxDbWriterFactory",
+                            "url": "${influxurl}",
+                            "username": "${influxuser}",
+                            "password": "${influxpassword}",
+                            "database": "${influxdb}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

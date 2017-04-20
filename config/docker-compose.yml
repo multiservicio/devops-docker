@@ -36,7 +36,18 @@ services:
     image: jenkins:latest
     container_name: jenkins
     ports:
-      - "8080:8080"
+      - 8080:8080
+      - 9090:9090
+    environment:
+      - "JAVA_OPTS=-Xms512m -Xmx512m \
+        -Dcom.sun.management.jmxremote
+        -Dcom.sun.management.jmxremote.rmi.port=9090 \
+        -Dcom.sun.management.jmxremote=true \
+        -Dcom.sun.management.jmxremote.port=9090 \
+        -Dcom.sun.management.jmxremote.ssl=false \
+        -Dcom.sun.management.jmxremote.authenticate=false \
+        -Dcom.sun.management.jmxremote.local.only=false \
+        -Djava.rmi.server.hostname=10.100.10.12"
 
   sonar:
     image: sonarqube:latest
@@ -71,4 +82,34 @@ services:
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock"
       - ./telegraf/config:/etc/telegraf
+
+  jmxtrans:
+    image: jmxtrans/jmxtrans:latest
+    depends_on:
+      - influxdb
+      - jenkins
+    environment:
+      - "SECONDS_BETWEEN_RUNS=5"
+      - "JMXTRANS_OPTS=-Dhost=10.100.10.12 -Dport=9090 -Dalias=jenkins -Dinfluxuser=root -Dinfluxpassword=root -Dinfluxdb=telegraf -Dinfluxurl=http://influxdb:8086"
+    volumes:
+      - ./jmxtrans/config:/var/lib/jmxtrans
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.3.0
+    container_name: elasticsearch
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - 9200:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       
