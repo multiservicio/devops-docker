@@ -10,7 +10,13 @@ if [ ! -z "$containers" ]; then
 fi
 
 echo "Rebuilding images"
+# Uncomment different docker-compose to build different stacks
+# docker-compose -f /vagrant/config/docker-compose-other.yml build
+# docker-compose -f /vagrant/config/docker-compose-elk.yml build
 docker-compose -f /vagrant/config/docker-compose.yml build
 
 echo "Starting containers"
+# Uncomment different docker-compose to build different stacks
+# docker-compose -f /vagrant/config/docker-compose-other.yml up -d --force-recreate
+# docker-compose -f /vagrant/config/docker-compose-elk.yml up -d --force-recreate
 docker-compose -f /vagrant/config/docker-compose.yml up -d --force-recreate
