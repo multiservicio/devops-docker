@@ -20,5 +20,8 @@ pipeline {
         sh 'echo "Deploying..."'
       }
     }
+    stage('PublishToInfluxdb') {
+      step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb'])
+    }
   }
 }
