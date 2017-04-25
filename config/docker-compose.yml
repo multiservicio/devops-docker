@@ -1,39 +1,14 @@
 version: '3'
 
 services:
-  consul:
-      image: consul:0.8.1
-      container_name: consul
-      command: agent -server -bootstrap -client 0.0.0.0 -ui
-      ports:
-        - "8500:8500"
-        - "8400:8400"
-        - "8600:8600"
-      labels:
-        - "SERVICE_TAGS=consul"
-      volumes:
-        - ./consul/config:/consul/config
-
-  registrator:
-    image: gliderlabs/registrator:latest
-    container_name: registrator
-    network_mode: "host"
-    command: "consul://consul:8500"
-    volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock"
-    network_mode: "host"
-    depends_on:
-      - consul
-
   dns:
     image: mgood/resolvable:latest
     container_name: dns
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
       - /etc/resolv.conf:/tmp/resolv.conf
-
   jenkins:
-    image: jenkins:latest
+    image: jenkinsci/blueocean
     container_name: jenkins
     ports:
       - 8080:8080
@@ -94,22 +69,5 @@ services:
     volumes:
       - ./jmxtrans/config:/var/lib/jmxtrans
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.3.0
-    container_name: elasticsearch
-    cap_add:
-      - IPC_LOCK
-    ports:
-      - 9200:9200
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  
       

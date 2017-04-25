@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+    consul:
+      image: consul:0.8.1
+      container_name: consul
+      command: agent -server -bootstrap -client 0.0.0.0 -ui
+      ports:
+        - "8500:8500"
+        - "8400:8400"
+        - "8600:8600"
+      labels:
+        - "SERVICE_TAGS=consul"
+      volumes:
+        - ./consul/config:/consul/config
+
+  registrator:
+    image: gliderlabs/registrator:latest
+    container_name: registrator
+    network_mode: "host"
+    command: "consul://consul:8500"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock"
+    network_mode: "host"
+    depends_on:
+      - consul
+
+  dns:
+    image: mgood/resolvable:latest
+    container_name: dns
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+      - /etc/resolv.conf:/tmp/resolv.conf
