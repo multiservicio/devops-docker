@@ -20,7 +20,10 @@ pipeline {
         sh 'echo "Deploying..."'
       }
     }
-    stage('PublishToInfluxdb') {
+  }
+  post {
+    always {
+      echo 'Post Action!'
       step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb'])
     }
   }
