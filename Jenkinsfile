@@ -22,8 +22,13 @@ pipeline {
     }
   }
   post {
-    always {
-      echo 'Post Action!'
+    when {
+      expression {
+        currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+      }
+    }
+    steps {
+      echo 'Publishing to Influxdb'
       step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb'])
     }
   }
