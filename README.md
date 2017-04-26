@@ -1,17 +1,27 @@
 # devops-docker
 
-Just a bunch of services running on docker containers.
+This Vagrant box is intented for testing of services.
+
+There are few stacks available as docker-compose files. You can check inside the ````config```` folder and read also inside the ````provision```` folder. 
+
+The default stack is a jenkins, sonarqube, influxdb, grafana stack. Is intented for testing locally jenkins pipelines and how to interconnect services such sonarqube in order to visualize code issues in grafana (through influxdb).
+
+The repo itself contain a valid jenkinsfile that you can use to create your pipeline (also to get inspired).
+
+Fork this repo and use it to experiment locally. 
+
+Any feedback is welcome!
 
 ## Services
 
-- [Grafana](local.dev:3000)
-- [Influxdb](local.dev:8083)
+- [Grafana :3000](local.dev:3000)
+- [Influxdb :8083](local.dev:8083)
 - Telegraf
-- [Jenkins](local.dev:8080)
-- [Sonar](local.dev:9000)
+- [Jenkins :8080](local.dev:8080)
+- [Sonar :9000](local.dev:9000)
 - Registrator
-- [Consul](local.dev:8500)
-- [elasticsearch](local.dev:9200)
+- [Consul :8500](local.dev:8500)
+- [elasticsearch :9200](local.dev:9200)
 
 
 ## Requirements 
@@ -21,9 +31,13 @@ Just a bunch of services running on docker containers.
 
 ### Vagrant plugins
 
+All the services are exposed in the domain ````local.dev```` with the hostupdater plugin we will have it set up in our host machine.
+
 ```
 vagrant plugin install vagrant-hostsupdater
 ```
+
+We will use docker for all the services and with this plugin we can get it install quite easily.
 
 ```
 vagrant plugin install vagrant-docker-compose
@@ -43,6 +57,8 @@ Then:
 docker exec -it jenkins bash
 cat /var/jenkins_home/secrets/initialAdminPassword
 ````
+
+Jenkins will require some manual configuration such us connection to ````github.com````, declare and configure the sonar local server (local.dev:9000) and so on. 
 
 #### Jenkinsfile
 
@@ -72,3 +88,10 @@ This grafana set up adds a data source from a local influxdb container and add s
 Sonar will be use here with an example code. You can find the project [here](https://github.com/SonarSource/sonar-examples)
 
 The ````properties```` file is on the root path of this repository and is thought with the idea of the dummy that lives on the ````helloworld```` folder.
+
+
+
+
+-------
+
+Pedro Diaz - 2017
