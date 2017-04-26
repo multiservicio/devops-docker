@@ -53,7 +53,7 @@
                     "steppedLine": true,
                     "targets": [
                         {
-                            "alias": "master",
+                            "alias": "$branch",
                             "dsType": "influxdb",
                             "groupBy": [
                                 {
@@ -90,51 +90,8 @@
                             "tags": [
                                 {
                                     "key": "project_name",
-                                    "operator": "=",
-                                    "value": "master"
-                                }
-                            ]
-                        },
-                        {
-                            "alias": "development",
-                            "dsType": "influxdb",
-                            "groupBy": [
-                                {
-                                    "params": [
-                                        "$__interval"
-                                    ],
-                                    "type": "time"
-                                },
-                                {
-                                    "params": [
-                                        "none"
-                                    ],
-                                    "type": "fill"
-                                }
-                            ],
-                            "measurement": "jenkins_data",
-                            "policy": "default",
-                            "refId": "B",
-                            "resultFormat": "time_series",
-                            "select": [
-                                [
-                                    {
-                                        "params": [
-                                            "build_time"
-                                        ],
-                                        "type": "field"
-                                    },
-                                    {
-                                        "params": [],
-                                        "type": "mean"
-                                    }
-                                ]
-                            ],
-                            "tags": [
-                                {
-                                    "key": "project_name",
-                                    "operator": "=",
-                                    "value": "development"
+                                    "operator": "=~",
+                                    "value": "/^$branch$/"
                                 }
                             ]
                         }
@@ -211,7 +168,7 @@
                     ],
                     "targets": [
                         {
-                            "alias": "development",
+                            "alias": "$branch",
                             "dsType": "influxdb",
                             "groupBy": [
                                 {
@@ -248,13 +205,94 @@
                             "tags": [
                                 {
                                     "key": "project_name",
-                                    "operator": "=",
-                                    "value": "development"
+                                    "operator": "=~",
+                                    "value": "/^$branch$/"
                                 }
                             ]
+                        }
+                    ],
+                    "title": "Historical Successful builds",
+                    "transform": "timeseries_to_rows",
+                    "transparent": true,
+                    "type": "table"
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 262,
+            "panels": [
+                {
+                    "content": "# SonarQube Analysis",
+                    "height": "100px",
+                    "id": 5,
+                    "links": [],
+                    "mode": "markdown",
+                    "span": 2,
+                    "title": "",
+                    "transparent": true,
+                    "type": "text"
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": null,
+                    "fill": 1,
+                    "height": "250px",
+                    "id": 3,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "blocker_issues",
+                            "color": "#BF1B00"
                         },
                         {
-                            "alias": "master",
+                            "alias": "critical_issues",
+                            "color": "#E24D42"
+                        },
+                        {
+                            "alias": "major_issues",
+                            "color": "#EF843C"
+                        },
+                        {
+                            "alias": "minor_issues",
+                            "color": "#EAB839"
+                        },
+                        {
+                            "alias": "info_issues",
+                            "color": "#1F78C1"
+                        }
+                    ],
+                    "span": 5,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "alias": "blocker_issues",
                             "dsType": "influxdb",
                             "groupBy": [
                                 {
@@ -270,15 +308,15 @@
                                     "type": "fill"
                                 }
                             ],
-                            "measurement": "jenkins_data",
+                            "measurement": "sonarqube_data",
                             "policy": "default",
-                            "refId": "B",
+                            "refId": "A",
                             "resultFormat": "time_series",
                             "select": [
                                 [
                                     {
                                         "params": [
-                                            "last_stable_build"
+                                            "blocker_issues"
                                         ],
                                         "type": "field"
                                     },
@@ -291,16 +329,329 @@
                             "tags": [
                                 {
                                     "key": "project_name",
-                                    "operator": "=",
-                                    "value": "master"
+                                    "operator": "=~",
+                                    "value": "/^$branch$/"
+                                }
+                            ]
+                        },
+                        {
+                            "alias": "critical_issues",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$__interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "none"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "sonarqube_data",
+                            "policy": "default",
+                            "refId": "B",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "critical_issues"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "project_name",
+                                    "operator": "=~",
+                                    "value": "/^$branch$/"
+                                }
+                            ]
+                        },
+                        {
+                            "alias": "info_issues",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$__interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "none"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "sonarqube_data",
+                            "policy": "default",
+                            "refId": "C",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "info_issues"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "project_name",
+                                    "operator": "=~",
+                                    "value": "/^$branch$/"
+                                }
+                            ]
+                        },
+                        {
+                            "alias": "major_issues",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$__interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "none"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "sonarqube_data",
+                            "policy": "default",
+                            "refId": "D",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "major_issues"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "project_name",
+                                    "operator": "=~",
+                                    "value": "/^$branch$/"
+                                }
+                            ]
+                        },
+                        {
+                            "alias": "minor_issues",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$__interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "none"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "sonarqube_data",
+                            "policy": "default",
+                            "refId": "E",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "minor_issues"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "project_name",
+                                    "operator": "=~",
+                                    "value": "/^$branch$/"
                                 }
                             ]
                         }
                     ],
-                    "title": "Historical Successful builds",
-                    "transform": "timeseries_to_rows",
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Open Issues",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
                     "transparent": true,
-                    "type": "table"
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": null,
+                    "fill": 1,
+                    "id": 4,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 5,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "alias": "lines_of_code",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$__interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "none"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "sonarqube_data",
+                            "policy": "default",
+                            "refId": "A",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "lines_of_code"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "project_name",
+                                    "operator": "=~",
+                                    "value": "/^$branch$/"
+                                }
+                            ]
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Lines of Code",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "transparent": true,
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
                 }
             ],
             "repeat": null,
@@ -318,7 +669,32 @@
         "build"
     ],
     "templating": {
-        "list": []
+        "list": [
+            {
+                "allValue": null,
+                "current": {
+                    "tags": [],
+                    "text": "development",
+                    "value": "development"
+                },
+                "datasource": "influxdb",
+                "hide": 0,
+                "includeAll": true,
+                "label": "branch",
+                "multi": false,
+                "name": "branch",
+                "options": [],
+                "query": "show tag values with key = \"project_name\"",
+                "refresh": 1,
+                "regex": "",
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            }
+        ]
     },
     "time": {
         "from": "now-1h",
@@ -351,5 +727,5 @@
     },
     "timezone": "browser",
     "title": "Jenkins - Build Info",
-    "version": 7
+    "version": 11
 }
