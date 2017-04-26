@@ -12,6 +12,10 @@ Fork this repo and use it to experiment locally.
 
 Any feedback is welcome!
 
+<img src="images/docker.png" style="width: 250px">
+<img src="images/jenkins-pipeline.png" style="width: 250px">
+<img src="images/sonar.png" style="width: 250px">
+
 ## Services
 
 - [Grafana :3000](local.dev:3000)
