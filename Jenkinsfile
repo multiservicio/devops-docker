@@ -16,10 +16,10 @@ pipeline {
       }
     }
     stage('SonarQube analysis') {
-      // requires SonarQube Scanner 2.8+
-      ws('./helloworld') {
+      steps {
+        // requires SonarQube Scanner 2.8+
         withSonarQubeEnv('sonar') {
-          sh "./sonar-scanner/bin/sonar-scanner"
+          sh "./helloworld/sonar-scanner/bin/sonar-scanner"
         }
       }
     }
