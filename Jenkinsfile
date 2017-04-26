@@ -15,6 +15,14 @@ pipeline {
         )
       }
     }
+    stage('SonarQube analysis') {
+      steps {
+        // requires SonarQube Scanner 2.8+
+        withSonarQubeEnv('sonar') {
+          sh "./helloworld/sonar-scanner/bin/sonar-scanner"
+        }
+      }
+    }
     stage('Deploy') {
       steps {
         sh 'echo "Deploying..."'
