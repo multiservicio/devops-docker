@@ -20,16 +20,24 @@ pipeline {
         sh 'echo "Deploying..."'
       }
     }
-  }
-  post {
-    when {
-      expression {
-        currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+    stage('Publish to Influxdb') {
+      when {
+        expression {
+          currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+        }
+      }
+      steps {
+        echo 'Publishing to Influxdb'
+        step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb'])
       }
     }
-    steps {
-      echo 'Publishing to Influxdb'
-      step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb'])
+  }
+  post {
+    always {
+      sh 'echo "Always in post"'  
     }
+    failure {
+        sh 'echo "The Pipeline failed :("'
+    }  
   }
 }
