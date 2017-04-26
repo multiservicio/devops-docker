@@ -47,7 +47,7 @@ cat /var/jenkins_home/secrets/initialAdminPassword
 #### Jenkins plugins
 
 - Influxdb
-- SonarQube
+- SonarQube Scanner for Jenkins	
 - BlueOcean (new pipelines interface)
 
 #### Jenkins InfluxDB plugin installation (manual)

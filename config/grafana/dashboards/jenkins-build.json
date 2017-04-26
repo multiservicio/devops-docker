@@ -153,7 +153,7 @@
                     ],
                     "targets": [
                         {
-                            "alias": "Build number",
+                            "alias": "development",
                             "dsType": "influxdb",
                             "groupBy": [
                                 {
@@ -187,11 +187,60 @@
                                     }
                                 ]
                             ],
-                            "tags": []
+                            "tags": [
+                                {
+                                    "key": "project_name",
+                                    "operator": "=",
+                                    "value": "development"
+                                }
+                            ]
+                        },
+                        {
+                            "alias": "master",
+                            "dsType": "influxdb",
+                            "groupBy": [
+                                {
+                                    "params": [
+                                        "$__interval"
+                                    ],
+                                    "type": "time"
+                                },
+                                {
+                                    "params": [
+                                        "none"
+                                    ],
+                                    "type": "fill"
+                                }
+                            ],
+                            "measurement": "jenkins_data",
+                            "policy": "default",
+                            "refId": "B",
+                            "resultFormat": "time_series",
+                            "select": [
+                                [
+                                    {
+                                        "params": [
+                                            "last_stable_build"
+                                        ],
+                                        "type": "field"
+                                    },
+                                    {
+                                        "params": [],
+                                        "type": "mean"
+                                    }
+                                ]
+                            ],
+                            "tags": [
+                                {
+                                    "key": "project_name",
+                                    "operator": "=",
+                                    "value": "master"
+                                }
+                            ]
                         }
                     ],
                     "title": "Historical Successful builds",
-                    "transform": "timeseries_to_columns",
+                    "transform": "timeseries_to_rows",
                     "transparent": true,
                     "type": "table"
                 }
@@ -244,5 +293,5 @@
     },
     "timezone": "browser",
     "title": "Jenkins - Build Info",
-    "version": 3
+    "version": 4
 }
