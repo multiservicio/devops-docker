@@ -13,34 +13,44 @@
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/custom.js"></script>
 </head>
 
 <body>
     <div class="navbar-fixed">
         <nav class="blue-grey darken-1">
             <div class="nav-wrapper">
-                <a class="brand-logo center">[projectName]</a>
-                <ul class="left hide-on-med-and-down">
-                    <li class="active"><a href="#">Jenkins</a></li>
-                    <li><a href="#">Grafana</a></li>
-                    <li><a href="#">Sonar</a></li>
-                    <li><a href="#">InfluxDB</a></li>
+                <a class="brand-logo left">&nbsp;&nbsp;[projectName]</a>
+                <ul class="right hide-on-med-and-down">
+                    <li onclick="loadIframeByUrl('http://local.dev:8080')" class="nav-item"><a>Jenkins</a></li>
+                    <li onclick="loadIframeByUrl('http://local.dev:3000')" class="nav-item"><a>Grafana</a></li>
+                    <li onclick="loadIframeByUrl('http://local.dev:8083')" class="nav-item"><a>InfluxDB</a></li>
+                    <li onclick="window.open('http://local.dev:9000')" class="nav-item"><a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Opens in a new tab"><i class="right material-icons">launch</i>Sonar</a></li>
+                    
                 </ul>
             </div>
         </nav>
     </div>
 
-    <div id="jenkins" style="width:100%; height:100%">
-        <iframe id="jenkins" src="http://local.dev:8080/blue/pipelines/" frameborder="0" style="width: 100%; height:100%"></iframe>
+    <div class="row no-data">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <div class="card blue-grey darken-1">
+                <div class="card-image light-blue lighten-2">
+                    <img src="images/avatar1.png" style="max-height:393px; max-width:254px; padding: 0.5em; align-items: center; margin-left: auto; margin-right: auto;">
+                    <span class="card-title">Developer Portal</span>
+                </div>
+                <div class="card-content white-text">
+                    <p>Welcome, please select one of the above available services. Once clicked you will load them within an
+                        <i>iframe</i></p>
+                </div>
+            </div>
+        </div>
+        <div class="col s3"></div>
     </div>
-    <div id="sonar" style="width:100%; height:100%; display:none">
-        <iframe id="sonar" src="http://local.dev:9000" frameborder="0"></iframe>
-    </div>
-    <div id="grafana" style="width:100%; height:100%; display:none">
-        <iframe id="grafana" src="http://local.dev:3000" frameborder="0" height="100%" width="100%"></iframe>
-    </div>
-    <div id="influxdb" style="width:100%; height:100%; display:none">
-        <iframe id="influxdb" src="http://local.dev:8083" frameborder="0" height="100%" width="100%"></iframe>
+
+    <div class="iframe-container" style="display:none">
+        <iframe id="iframe" src="" frameborder="0">
     </div>
 
 </body>

@@ -1,4 +1,24 @@
 html, 
 body {
     height: 100%;
+    background-color: #eceff1;
+}
+
+#iframe {
+    height: 100%;
+    width: 100%;
+}
+
+.iframe-container {
+    height: 100%;
+    width: 100%;    
+}
+
+.no-data {
+    margin: 1em;
+    width: 100%;
+    margin-top: 10em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
