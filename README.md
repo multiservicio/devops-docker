@@ -32,9 +32,13 @@ Any feedback is welcome!
 
 Unified UI where you can see all the services. Sometimes you start to accumulate so many services that you need during your development time. Like GitHub, Jenkins, Sonar, Grafana... 
 
-DevUi comes as a simple entry point where you can switch from one to another. Is nothing than a simple HTML page that loads the services within an ```ìframe````.
+DevUi comes as a simple entry point where you can switch from one to another. Is nothing than a simple HTML page that loads the services within an ````iframe````.
 
 <img src="images/devui.png" style="width: 250px">
+
+It is build with [Materialize css](http://materializecss.com).
+
+Avatar logo from: https://www.behance.net/gallery/22433737/Super-Heroes-Avatars
 
 ## Requirements 
 
