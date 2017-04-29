@@ -7,12 +7,34 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
       - /etc/resolv.conf:/tmp/resolv.conf
+
+  devui:
+    build: devui
+    container_name: devui
+    ports:
+      - 80:80
+  
+  mysql:
+    image: mysql
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD=qwerty7"
+      - "MYSQL_DATABASE=sonar"
+      - "MYSQL_USER=sonar"
+      - "MYSQL_PASSWORD=sonar"
+
   jenkins:
     image: jenkinsci/blueocean
     container_name: jenkins
     ports:
       - 8080:8080
       - 9090:9090
+    volumes:
+      - "jenkins_data:/var/jenkins_home"
     environment:
       - "JAVA_OPTS=-Xms512m -Xmx512m \
         -Dcom.sun.management.jmxremote
@@ -22,14 +44,8 @@ services:
         -Dcom.sun.management.jmxremote.ssl=false \
         -Dcom.sun.management.jmxremote.authenticate=false \
         -Dcom.sun.management.jmxremote.local.only=false \
-        -Djava.rmi.server.hostname=10.100.10.12"
-
-  sonar:
-    image: sonarqube:latest
-    container_name: sonar
-    ports:
-      - "9000:9000"
-      - "9092:9092"
+        -Djava.rmi.server.hostname=10.100.10.12 \
+        -Djenkins.security.FrameOptionsPageDecorator.enabled=false"
   
   grafana:
     image: grafana/grafana:latest
@@ -50,6 +66,7 @@ services:
       - "8086:8086"
     volumes:
       - "./influxdb/config:/etc/influxdb"
+      - "influx_data:/var/lib/influxdb"
 
   telegraf:
     image: telegraf:latest
@@ -69,5 +86,27 @@ services:
     volumes:
       - ./jmxtrans/config:/var/lib/jmxtrans
 
-  
+  sonar:
+    image: sonarqube:latest
+    container_name: sonar
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+    environment:
+      - "SONARQUBE_JDBC_USERNAME=sonar"
+      - "SONARQUBE_JDBC_PASSWORD=sonar"
+      - "SONARQUBE_JDBC_URL=jdbc:mysql://mysql:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true"
       
+volumes:
+    jenkins_data:
+    influx_data:
+    mysql-data:
+    sonarqube_conf:
+    sonarqube_data:
+    sonarqube_extensions:
+    sonarqube_bundled-plugins:
