@@ -1,18 +1,12 @@
 pipeline {
   agent any
+  triggers {
+        cron('*/5 * * * *')
+  }
   stages {
-    stage('Lint') {
+    stage('Tests') {
       steps {
-        parallel(
-          "Lint": {
-            sh 'echo \'linted!\''
-            
-          },
-          "Time": {
-            sh 'echo "date"'
-            
-          }
-        )
+        sh "echo 'testing...'"
       }
     }
     stage('SonarQube analysis') {
@@ -23,26 +17,25 @@ pipeline {
         }
       }
     }
-    stage('Deploy') {
+    stage('Build') {
       steps {
-        sh 'echo "Deploying..."'
+        sh 'echo "Building..."'
       }
     }
-    stage('Publish to Influxdb') {
+    stage('Publish results to Influxdb') {
       when {
         expression {
           currentBuild.result == null || currentBuild.result == 'SUCCESS' 
         }
       }
       steps {
-        echo 'Publishing to Influxdb'
         step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb'])
       }
     }
   }
   post {
     always {
-      sh 'echo "Always in post"'  
+      sh 'echo "Success!!!"'  
     }
     failure {
         sh 'echo "The Pipeline failed :("'
