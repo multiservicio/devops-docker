@@ -4,11 +4,6 @@ pipeline {
         pollSCM ('H/5 * * * *')
   }
   stages {
-    stage('Print variables') {
-      steps { 
-        sh echo ${env.BRANCH_NAME}
-      }  
-    }
     stage('Tests') {
       steps {
         sh "echo 'testing...'"
