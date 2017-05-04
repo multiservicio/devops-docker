@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    GITHUB_TOKEN = credentials('github_token')
+    GITHUB_TOKEN = credentials('github')
   }
   triggers {
         pollSCM ('H/5 * * * *')
