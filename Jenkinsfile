@@ -1,9 +1,17 @@
 pipeline {
   agent any
+  environment {
+    GITHUB_TOKEN = credentials('github_token')
+  }
   triggers {
         pollSCM ('H/5 * * * *')
   }
   stages {
+    stage('Environment variables') {
+      steps {
+        sh 'printenv'
+      }
+    }
     stage('Tests') {
       steps {
         sh "echo 'testing...'"
