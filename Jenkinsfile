@@ -5,6 +5,9 @@ pipeline {
   }
   triggers {
         pollSCM ('H/5 * * * *')
+        pullRequest {
+          cron('H/5 * * * *')  
+        }
   }
   stages {
     stage('Environment variables') {
