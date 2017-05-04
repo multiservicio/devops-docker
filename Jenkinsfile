@@ -1,55 +1,17 @@
-pipeline {
-  agent any
-  environment {
-    GITHUB_TOKEN = credentials('github')
+node {
+  stage("Prepare") {
+    checkout scm
   }
-  triggers {
-        pollSCM ('H/5 * * * *')
-        pullRequest {
-          cron('H/5 * * * *')  
-        }
+  stage('Print env') {
+    sh 'printenv'
   }
-  stages {
-    stage('Environment variables') {
-      steps {
-        sh 'printenv'
-      }
-    }
-    stage('Tests') {
-      steps {
-        sh "echo 'testing...'"
-      }
-    }
-    stage('SonarQube analysis') {
-      steps {
-        // requires SonarQube Scanner 2.8+
-        withSonarQubeEnv('sonar') {
-          sh "./helloworld/sonar-scanner/bin/sonar-scanner"
-        }
-      }
-    }
-    stage('Build') {
-      steps {
-        sh 'echo "Building..."'
-      }
-    }
-    stage('Publish results to Influxdb') {
-      when {
-        expression {
-          currentBuild.result == null || currentBuild.result == 'SUCCESS' 
-        }
-      }
-      steps {
-        step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb'])
-      }
-    }
-  }
-  post {
-    always {
-      sh 'echo "Success!!!"'  
-    }
-    failure {
-        sh 'echo "The Pipeline failed :("'
+  stage("Sonar") {
+    withSonarQubeEnv('sonar') {
+      sh "./helloworld/sonar-scanner/bin/sonar-scanner"
     }  
   }
+  stage('Publish to Influxdb') {
+    step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb']) 
+  }
+
 }
