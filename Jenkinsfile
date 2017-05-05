@@ -13,10 +13,7 @@ node {
     sh "echo sonar.github.repository=multiservicio/devops-docker >> sonar-project.properties"
     sh "echo sonar.analysis.mode=preview >> sonar-project.properties"
     sh "echo sonar.github.pullRequest=${pullRequestId(env.BRANCH_NAME)}>> sonar-project.properties"
-
-    withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-      sh "echo sonar.github.oauth=$GITHUB_TOKEN >> sonar-project.properties"
-    }
+    sh "echo sonar.github.oauth=xxxx >> sonar-project.properties"
     
     withSonarQubeEnv('sonar') {
       sh "./helloworld/sonar-scanner/bin/sonar-scanner"
