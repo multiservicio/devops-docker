@@ -1,51 +1,37 @@
-pipeline {
-  agent any
-  stages {
-    stage('Lint') {
-      steps {
-        parallel(
-          "Lint": {
-            sh 'echo \'linted!\''
-            
-          },
-          "Time": {
-            sh 'echo "date"'
-            
-          }
-        )
-      }
-    }
-    stage('SonarQube analysis') {
-      steps {
-        // requires SonarQube Scanner 2.8+
-        withSonarQubeEnv('sonar') {
-          sh "./helloworld/sonar-scanner/bin/sonar-scanner"
-        }
-      }
-    }
-    stage('Deploy') {
-      steps {
-        sh 'echo "Deploying..."'
-      }
-    }
-    stage('Publish to Influxdb') {
-      when {
-        expression {
-          currentBuild.result == null || currentBuild.result == 'SUCCESS' 
-        }
-      }
-      steps {
-        echo 'Publishing to Influxdb'
-        step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb'])
-      }
-    }
+node {
+  stage("Prepare") {
+    checkout scm
   }
-  post {
-    always {
-      sh 'echo "Always in post"'  
-    }
-    failure {
-        sh 'echo "The Pipeline failed :("'
+
+  stage('Print env') {
+    sh 'printenv'
+  }
+
+  stage("Sonar") {
+
+    // Adding variables to sonar.properties
+    sh "echo sonar.github.repository=multiservicio/devops-docker >> sonar-project.properties"
+    sh "echo sonar.analysis.mode=preview >> sonar-project.properties"
+    sh "echo sonar.github.pullRequest=${pullRequestId(env.BRANCH_NAME)}>> sonar-project.properties"
+    sh "echo sonar.github.oauth=xxxx >> sonar-project.properties"
+    
+    withSonarQubeEnv('sonar') {
+      sh "./helloworld/sonar-scanner/bin/sonar-scanner"
     }  
   }
+
+  stage('Publish to Influxdb') {
+    step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb']) 
+  }
+
+}
+
+/**
+ * Get pull request id from branch string
+ *
+ * @param branch
+ * @return
+ */
+String pullRequestId(String branch) {
+    return (branch =~ /^PR-(\d+)$/)[0][1]
 }
